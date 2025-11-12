@@ -1,0 +1,35 @@
+/* App Strings - English */
+
+/* Error Messages */
+"error.title" = "Something went wrong";
+"error.button" = "OK";
+"error.unknown" = "Unknown error";
+
+/* Loading */
+"loading.title" = "Preparing photos";
+"loading.subtitle" = "Please wait...";
+
+/* Access Denied */
+"access_denied.title" = "Photo access required";
+"access_denied.message" = "Enable gallery access to clean your photos. Swipe right to delete, swipe left to keep.";
+"access_denied.button" = "Open Settings";
+
+/* Actions */
+"action.delete" = "Delete";
+"action.keep" = "Keep";
+"action.skip" = "Skip";
+"action.random" = "Random";
+"action.video" = "Video";
+
+/* Filter Panel */
+"filter.title" = "Filters";
+"filter.close" = "Close";
+"filter.album_section" = "Select Album";
+"filter.refresh_albums" = "Refresh Albums";
+"filter.media_type" = "Media Type";
+"filter.date_filter" = "Date Filter";
+
+/* Stats */
+"stats.deleted" = "Deleted";
+"stats.skipped" = "Skipped";
+"stats.kept" = "Kept";

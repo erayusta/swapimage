@@ -1,0 +1,3 @@
+/* Photo Library Usage */
+"NSPhotoLibraryUsageDescription" = "Galerinizi temizlemek için fotoğraflara erişim izni gerekiyor.";
+"NSPhotoLibraryAddUsageDescription" = "Silme işlemleri için fotoğraf arşivinizi düzenleme iznine ihtiyacımız var.";

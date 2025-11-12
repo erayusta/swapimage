@@ -1,0 +1,35 @@
+/* App Strings - Turkish */
+
+/* Error Messages */
+"error.title" = "Bir şey ters gitti";
+"error.button" = "Tamam";
+"error.unknown" = "Bilinmeyen hata";
+
+/* Loading */
+"loading.title" = "Fotoğraflar hazırlanıyor";
+"loading.subtitle" = "Lütfen bekleyin...";
+
+/* Access Denied */
+"access_denied.title" = "Fotoğraflara erişim izni gerekli";
+"access_denied.message" = "Fotoğrafları temizlemek için galeri erişimini etkinleştir. Sağa kaydırarak silin, sola kaydırarak tutun.";
+"access_denied.button" = "Ayarları Aç";
+
+/* Actions */
+"action.delete" = "Sil";
+"action.keep" = "Tut";
+"action.skip" = "Pas geç";
+"action.random" = "Rastgele";
+"action.video" = "Video";
+
+/* Filter Panel */
+"filter.title" = "Filtreler";
+"filter.close" = "Kapat";
+"filter.album_section" = "Albüm seç";
+"filter.refresh_albums" = "Albümleri yenile";
+"filter.media_type" = "Medya tipi";
+"filter.date_filter" = "Zaman filtresi";
+
+/* Stats */
+"stats.deleted" = "Silinen";
+"stats.skipped" = "Atlanan";
+"stats.kept" = "Tutulan";
