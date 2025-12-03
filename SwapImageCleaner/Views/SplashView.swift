@@ -32,11 +32,11 @@ struct SplashView: View {
                     
                     // App Name
                     VStack(spacing: 6) {
-                        Text("splash.title", tableName: "Localizable")
+                        Text(NSLocalizedString("splash.title", comment: "Splash screen title"))
                             .font(.title2.weight(.bold))
                             .foregroundStyle(.white)
                         
-                        Text("splash.subtitle", tableName: "Localizable")
+                        Text(NSLocalizedString("splash.subtitle", comment: "Splash screen subtitle"))
                             .font(.subheadline.weight(.medium))
                             .foregroundStyle(.white.opacity(0.7))
                     }
