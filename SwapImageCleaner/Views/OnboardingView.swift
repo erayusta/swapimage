@@ -115,16 +115,21 @@ struct OnboardingView: View {
     }
 
     private func header(isCompact: Bool) -> some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Swap Image Cleaner")
-                    .font((isCompact ? Font.footnote : Font.subheadline).weight(.medium))
-                    .foregroundStyle(.white.opacity(0.7))
+        HStack(spacing: 12) {
+            // App Icon
+            AppIconView(size: isCompact ? 44 : 52)
+            
+            VStack(alignment: .leading, spacing: 2) {
                 Text("Hadi başlayalım")
                     .font((isCompact ? Font.title3 : Font.title2).weight(.bold))
                     .foregroundStyle(.white)
+                Text("Galerini temizlemeye hazır mısın?")
+                    .font((isCompact ? Font.caption : Font.footnote).weight(.medium))
+                    .foregroundStyle(.white.opacity(0.7))
             }
+            
             Spacer()
+            
             Button(action: onFinish) {
                 Text("Atla")
                     .font((isCompact ? Font.caption : Font.subheadline).weight(.semibold))
@@ -276,5 +281,57 @@ private struct PageIndicator: View {
                     .animation(.easeInOut(duration: 0.25), value: index)
             }
         }
+    }
+}
+
+private struct AppIconView: View {
+    let size: CGFloat
+    
+    var body: some View {
+        Group {
+            if let icon = loadAppIcon() {
+                Image(uiImage: icon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+            } else {
+                // Fallback gradient icon
+                RoundedRectangle(cornerRadius: size * 0.22, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.purple, Color.blue],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .overlay(
+                        Image(systemName: "photo.stack")
+                            .font(.system(size: size * 0.4, weight: .semibold))
+                            .foregroundStyle(.white)
+                    )
+            }
+        }
+        .frame(width: size, height: size)
+        .clipShape(RoundedRectangle(cornerRadius: size * 0.22, style: .continuous))
+        .shadow(color: .black.opacity(0.3), radius: 8, x: 0, y: 4)
+    }
+    
+    private func loadAppIcon() -> UIImage? {
+        // Try to load from bundle
+        if let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
+           let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
+           let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
+           let lastIcon = iconFiles.last {
+            return UIImage(named: lastIcon)
+        }
+        
+        // Fallback: try common names
+        let iconNames = ["AppIcon60x60", "AppIcon", "Icon-60@3x", "icon-60@3x"]
+        for name in iconNames {
+            if let icon = UIImage(named: name) {
+                return icon
+            }
+        }
+        
+        return nil
     }
 }
