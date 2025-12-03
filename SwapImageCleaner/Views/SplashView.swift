@@ -7,6 +7,14 @@ struct SplashView: View {
     @State private var textOpacity: CGFloat = 0
     @State private var textOffset: CGFloat = 20
     
+    private var splashTitle: String {
+        Bundle.main.localizedString(forKey: "splash.title", value: "Gallery Cleaner", table: nil)
+    }
+    
+    private var splashSubtitle: String {
+        Bundle.main.localizedString(forKey: "splash.subtitle", value: "Swipe to Clean", table: nil)
+    }
+    
     var body: some View {
         if isActive {
             AppRootView()
@@ -32,11 +40,11 @@ struct SplashView: View {
                     
                     // App Name
                     VStack(spacing: 6) {
-                        Text(NSLocalizedString("splash.title", comment: "Splash screen title"))
+                        Text(splashTitle)
                             .font(.title2.weight(.bold))
                             .foregroundStyle(.white)
                         
-                        Text(NSLocalizedString("splash.subtitle", comment: "Splash screen subtitle"))
+                        Text(splashSubtitle)
                             .font(.subheadline.weight(.medium))
                             .foregroundStyle(.white.opacity(0.7))
                     }
