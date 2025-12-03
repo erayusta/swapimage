@@ -40,6 +40,7 @@ struct OnboardingView: View {
     @State private var headerOpacity: CGFloat = 0
     @State private var headerOffset: CGFloat = -20
     @State private var buttonScale: CGFloat = 0.9
+    @State private var showConfetti = false
     
     private let hapticSelection = UISelectionFeedbackGenerator()
     private let hapticImpact = UIImpactFeedbackGenerator(style: .medium)
@@ -97,6 +98,12 @@ struct OnboardingView: View {
                 .padding(.horizontal, isCompact ? 16 : 24)
                 .padding(.top, safeInsets.top + (isCompact ? 8 : 28))
                 .padding(.bottom, safeInsets.bottom + (isCompact ? 12 : 32))
+                
+                // Confetti overlay for final slide
+                if showConfetti {
+                    ConfettiView()
+                        .allowsHitTesting(false)
+                }
             }
             .ignoresSafeArea()
             .onAppear {
@@ -149,6 +156,11 @@ struct OnboardingView: View {
         if currentIndex < slides.count - 1 {
             withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                 currentIndex += 1
+            }
+            
+            // Show confetti on last slide
+            if currentIndex == slides.count - 1 {
+                showConfetti = true
             }
         } else {
             let successHaptic = UINotificationFeedbackGenerator()

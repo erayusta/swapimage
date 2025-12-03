@@ -150,6 +150,10 @@ final class PhotoCleanerViewModel: ObservableObject {
         guard let asset = currentAsset else { return }
         markAssetProcessed(asset)
         stats.kept += 1
+        
+        // Track for review
+        ReviewManager.shared.recordPhotoProcessed()
+        
         advanceToNextAsset()
     }
 
@@ -162,6 +166,9 @@ final class PhotoCleanerViewModel: ObservableObject {
         pendingDeleteCount = pendingDeleteQueue.count
         stats.deleted += 1
         markAssetProcessed(asset)
+        
+        // Track for review
+        ReviewManager.shared.recordPhotoProcessed()
 
         advanceToNextAsset()
         scheduleDeleteFlush()
@@ -172,6 +179,10 @@ final class PhotoCleanerViewModel: ObservableObject {
         stats.skipped += 1
         markAssetProcessed(asset)
         assetQueue.append(asset)
+        
+        // Track for review
+        ReviewManager.shared.recordPhotoProcessed()
+        
         advanceToNextAsset()
     }
 
@@ -381,6 +392,9 @@ final class PhotoCleanerViewModel: ObservableObject {
             try await libraryManager.delete(assets: batch)
             pendingDeleteStatsCount = max(0, pendingDeleteStatsCount - batch.count)
             batchIdentifiers.forEach { pendingDeleteIdentifiers.remove($0) }
+            
+            // Successful deletion - good moment for review
+            ReviewManager.shared.recordSuccessfulDeletion(count: batch.count)
         } catch {
             // Roll back optimistic stats and re-queue the assets for another attempt.
             let rollbackAmount = min(batch.count, pendingDeleteStatsCount)

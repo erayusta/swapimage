@@ -176,6 +176,9 @@ private struct EmptyDeckView: View {
                 sparkleRotation = 15
                 sparkleScale = 1.1
             }
+            
+            // User completed cleaning session - great moment for review
+            ReviewManager.shared.recordCleaningSessionComplete()
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Galerin tertemiz")
