@@ -33,3 +33,38 @@
 "stats.deleted" = "Silinen";
 "stats.skipped" = "Atlanan";
 "stats.kept" = "Tutulan";
+
+/* Onboarding */
+"onboarding.header_title" = "Hadi başlayalım";
+"onboarding.header_subtitle" = "Galerini temizlemeye hazır mısın?";
+"onboarding.skip" = "Atla";
+"onboarding.continue" = "Devam";
+"onboarding.start" = "Başlayalım!";
+
+"onboarding.slide1_title" = "Sağa Kaydır: Tut";
+"onboarding.slide1_description" = "Tutmak istediğin fotoğrafları sağa kaydır. Galeride güvende kalacaklar.";
+
+"onboarding.slide2_title" = "Sola Kaydır: Sil";
+"onboarding.slide2_description" = "Silmek istediğin fotoğrafları sola kaydır. Silmeden önce onay isteyeceğiz.";
+
+"onboarding.slide3_title" = "Yukarı Kaydır: Atla";
+"onboarding.slide3_description" = "Emin değil misin? Yukarı kaydırarak atla. Daha sonra karar verebilirsin.";
+
+"onboarding.slide4_title" = "Filtrele ve Düzenle";
+"onboarding.slide4_description" = "Albüm, tarih veya medya tipine göre filtrele. Galerini istediğin gibi temizle.";
+
+/* Empty State */
+"empty.title" = "Galerin tertemiz!";
+"empty.subtitle" = "Yeniden taramak için butona bas.";
+"empty.rescan" = "Yeniden Tara";
+
+/* Delete Confirmation */
+"delete.confirm_title" = "Fotoğrafları Sil";
+"delete.confirm_message" = "%d fotoğrafı silmek istediğinden emin misin?";
+"delete.cancel" = "İptal";
+"delete.confirm" = "Sil";
+
+/* General */
+"general.photos" = "Fotoğraflar";
+"general.videos" = "Videolar";
+"general.all" = "Tümü";

@@ -33,3 +33,38 @@
 "stats.deleted" = "Deleted";
 "stats.skipped" = "Skipped";
 "stats.kept" = "Kept";
+
+/* Onboarding */
+"onboarding.header_title" = "Let's get started";
+"onboarding.header_subtitle" = "Ready to clean your gallery?";
+"onboarding.skip" = "Skip";
+"onboarding.continue" = "Continue";
+"onboarding.start" = "Let's Start!";
+
+"onboarding.slide1_title" = "Swipe Right to Keep";
+"onboarding.slide1_description" = "Photos you want to keep, swipe right. They'll stay safe in your gallery.";
+
+"onboarding.slide2_title" = "Swipe Left to Delete";
+"onboarding.slide2_description" = "Swipe left for photos you want to delete. We'll ask for confirmation before deleting.";
+
+"onboarding.slide3_title" = "Swipe Up to Skip";
+"onboarding.slide3_description" = "Not sure? Swipe up to skip. You can decide later.";
+
+"onboarding.slide4_title" = "Filter & Organize";
+"onboarding.slide4_description" = "Filter by album, date, or media type. Clean your gallery the way you want.";
+
+/* Empty State */
+"empty.title" = "Your gallery is clean!";
+"empty.subtitle" = "Tap the button to scan again.";
+"empty.rescan" = "Scan Again";
+
+/* Delete Confirmation */
+"delete.confirm_title" = "Delete Photos";
+"delete.confirm_message" = "Are you sure you want to delete %d photos?";
+"delete.cancel" = "Cancel";
+"delete.confirm" = "Delete";
+
+/* General */
+"general.photos" = "Photos";
+"general.videos" = "Videos";
+"general.all" = "All";
