@@ -21,6 +21,10 @@
 		01C8F7C02F0A0D5C00A0F1A0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01C8F7B12F0A0D5C00A0F1A0 /* Preview Assets.xcassets */; };
 		01C8F7D02F0A5F0800A0F1A0 /* PhotoAlbum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8F7CF2F0A5F0800A0F1A0 /* PhotoAlbum.swift */; };
 		01C8F7D22F0A5F0800A0F1A0 /* DateFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8F7D12F0A5F0800A0F1A0 /* DateFilter.swift */; };
+		01C8F9A02F0A6A1E00A0F1A0 /* MediaFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8F9A12F0A6A1E00A0F1A0 /* MediaFilter.swift */; };
+		01C8FAA22F0A0D5C00A0F1A0 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8FAA12F0A0D5C00A0F1A0 /* AppRootView.swift */; };
+		01C8FAA42F0A0D5C00A0F1A0 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8FAA32F0A0D5C00A0F1A0 /* OnboardingView.swift */; };
+		01C8FAA62F0A0D5C00A0F1A0 /* AuroraBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8FAA52F0A0D5C00A0F1A0 /* AuroraBackground.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +44,10 @@
 		01C8F7B22F0A0D5C00A0F1A0 /* SwapImageCleaner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwapImageCleaner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C8F7CF2F0A5F0800A0F1A0 /* PhotoAlbum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbum.swift; sourceTree = "<group>"; };
 		01C8F7D12F0A5F0800A0F1A0 /* DateFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFilter.swift; sourceTree = "<group>"; };
+		01C8F9A12F0A6A1E00A0F1A0 /* MediaFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaFilter.swift; sourceTree = "<group>"; };
+		01C8FAA12F0A0D5C00A0F1A0 /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
+		01C8FAA32F0A0D5C00A0F1A0 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		01C8FAA52F0A0D5C00A0F1A0 /* AuroraBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuroraBackground.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +98,7 @@
 			children = (
 				01C8F7CF2F0A5F0800A0F1A0 /* PhotoAlbum.swift */,
 				01C8F7D12F0A5F0800A0F1A0 /* DateFilter.swift */,
+				01C8F9A12F0A6A1E00A0F1A0 /* MediaFilter.swift */,
 				01C8F7AA2F0A0D5C00A0F1A0 /* PhotoAsset.swift */,
 			);
 			path = Models;
@@ -114,6 +123,9 @@
 		01C8F7972F0A0D5B00A0F1A0 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				01C8FAA12F0A0D5C00A0F1A0 /* AppRootView.swift */,
+				01C8FAA32F0A0D5C00A0F1A0 /* OnboardingView.swift */,
+				01C8FAA52F0A0D5C00A0F1A0 /* AuroraBackground.swift */,
 				01C8F7A52F0A0D5C00A0F1A0 /* ContentView.swift */,
 				01C8F7A72F0A0D5C00A0F1A0 /* SwipeDeckView.swift */,
 				01C8F7A82F0A0D5C00A0F1A0 /* SwipeCardView.swift */,
@@ -226,11 +238,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01C8FAA42F0A0D5C00A0F1A0 /* OnboardingView.swift in Sources */,
+				01C8FAA62F0A0D5C00A0F1A0 /* AuroraBackground.swift in Sources */,
+				01C8F9A02F0A6A1E00A0F1A0 /* MediaFilter.swift in Sources */,
 				01C8F7BD2F0A0D5C00A0F1A0 /* ImageCache.swift in Sources */,
 				01C8F7B82F0A0D5C00A0F1A0 /* SwipeCardView.swift in Sources */,
 				01C8F7B52F0A0D5C00A0F1A0 /* ContentView.swift in Sources */,
 				01C8F7BC2F0A0D5C00A0F1A0 /* PhotoCleanerViewModel.swift in Sources */,
 				01C8F7BB2F0A0D5C00A0F1A0 /* PhotoLibraryManager.swift in Sources */,
+				01C8FAA22F0A0D5C00A0F1A0 /* AppRootView.swift in Sources */,
 				01C8F7B92F0A0D5C00A0F1A0 /* AssetImageView.swift in Sources */,
 				01C8F7D02F0A5F0800A0F1A0 /* PhotoAlbum.swift in Sources */,
 				01C8F7D22F0A5F0800A0F1A0 /* DateFilter.swift in Sources */,
@@ -372,7 +388,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"SwapImageCleaner/Preview Content\"";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SwapImageCleaner/Support/Info.plist;
@@ -382,7 +398,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiperightphotocleaner.app;
 				PRODUCT_NAME = "Swipe Right - Photo Cleaner";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -397,7 +413,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"SwapImageCleaner/Preview Content\"";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SwapImageCleaner/Support/Info.plist;
@@ -407,7 +423,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiperightphotocleaner.app;
 				PRODUCT_NAME = "Swipe Right - Photo Cleaner";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -17,14 +17,21 @@ struct SwipeCardView: View {
     @State private var swipeOutcome: SwipeOutcome?
     @State private var isAnimatingOut = false
     @State private var shimmerOffset: CGFloat = -1
+    @State private var cardAppearScale: CGFloat = 0.92
+    @State private var cardAppearOpacity: CGFloat = 0
+    @State private var lastHapticThreshold: Int = 0
 
     private let threshold: CGFloat = 120
+    private let hapticLight = UIImpactFeedbackGenerator(style: .light)
+    private let hapticMedium = UIImpactFeedbackGenerator(style: .medium)
+    private let hapticHeavy = UIImpactFeedbackGenerator(style: .heavy)
 
     var body: some View {
         AssetCardView(asset: asset, cornerRadius: 28, shadowOpacity: 0.3, isPreview: false)
             .offset(translation)
             .rotationEffect(.degrees(Double(translation.width / 20)))
-            .scaleEffect(isAnimatingOut ? 0.95 : 1)
+            .scaleEffect(isAnimatingOut ? 0.95 : cardAppearScale)
+            .opacity(cardAppearOpacity)
             .overlay {
                 // Shimmer effect
                 RoundedRectangle(cornerRadius: 28, style: .continuous)
@@ -109,6 +116,7 @@ struct SwipeCardView: View {
                     .onChanged { value in
                         guard !isAnimatingOut else { return }
                         translation = value.translation
+                        provideProgressiveHaptic(for: value.translation)
                     }
                     .onEnded { value in
                         guard !isAnimatingOut else { return }
@@ -117,10 +125,56 @@ struct SwipeCardView: View {
             )
             .animation(.interactiveSpring(response: 0.3, dampingFraction: 0.8), value: translation)
             .onAppear {
+                // Prepare haptics
+                hapticLight.prepare()
+                hapticMedium.prepare()
+                hapticHeavy.prepare()
+                
+                // Card entrance animation
+                withAnimation(.spring(response: 0.45, dampingFraction: 0.75)) {
+                    cardAppearScale = 1.0
+                    cardAppearOpacity = 1.0
+                }
+                
                 withAnimation(.linear(duration: 3).repeatForever(autoreverses: false)) {
                     shimmerOffset = 1
                 }
             }
+            .onChange(of: asset.id) { _ in
+                // Reset and animate for new card
+                cardAppearScale = 0.92
+                cardAppearOpacity = 0
+                lastHapticThreshold = 0
+                
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.72)) {
+                    cardAppearScale = 1.0
+                    cardAppearOpacity = 1.0
+                }
+            }
+    }
+    
+    private func provideProgressiveHaptic(for translation: CGSize) {
+        let horizontalProgress = abs(translation.width) / threshold
+        let verticalProgress = -translation.height / threshold
+        let maxProgress = max(horizontalProgress, verticalProgress)
+        
+        let currentThreshold = Int(maxProgress * 3) // 0, 1, 2, 3 stages
+        
+        if currentThreshold > lastHapticThreshold && currentThreshold <= 3 {
+            switch currentThreshold {
+            case 1:
+                hapticLight.impactOccurred(intensity: 0.5)
+            case 2:
+                hapticMedium.impactOccurred(intensity: 0.7)
+            case 3:
+                hapticHeavy.impactOccurred(intensity: 1.0)
+            default:
+                break
+            }
+            lastHapticThreshold = currentThreshold
+        } else if currentThreshold < lastHapticThreshold {
+            lastHapticThreshold = currentThreshold
+        }
     }
 
     private func handleDragEnded(value: DragGesture.Value) {
@@ -145,6 +199,17 @@ struct SwipeCardView: View {
     private func performSwipe(_ outcome: SwipeOutcome) {
         swipeOutcome = outcome
         isAnimatingOut = true
+        
+        // Success haptic on confirmed swipe
+        let notificationGenerator = UINotificationFeedbackGenerator()
+        switch outcome {
+        case .keep:
+            notificationGenerator.notificationOccurred(.success)
+        case .delete:
+            notificationGenerator.notificationOccurred(.warning)
+        case .skip:
+            hapticMedium.impactOccurred(intensity: 0.6)
+        }
 
         let targetOffset: CGSize
         switch outcome {
@@ -302,5 +367,8 @@ struct AssetCardView: View {
                         lineWidth: isPreview ? 1 : 1.5
                     )
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(asset.mediaType == .video ? "Video" : "Fotoğraf")
+            .accessibilityHint(isPreview ? "Sıradaki içerik" : "Sağa kaydırarak tut, sola kaydırarak sil, yukarı kaydırarak atla")
     }
 }

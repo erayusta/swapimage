@@ -60,6 +60,7 @@ final class PhotoCleanerViewModel: ObservableObject {
     @Published private(set) var mediaFilter: MediaFilter = .all
     @Published private(set) var pendingDeleteCount: Int = 0
     @Published var errorMessage: String?
+    @Published var noticeMessage: String?
 
     var availableDateFilters: [DateFilter] {
         DateFilter.allCases
@@ -108,9 +109,15 @@ final class PhotoCleanerViewModel: ObservableObject {
     private var deleteWorkItem: DispatchWorkItem?
     private var didBootstrap = false
     private var isFlushingDeletes = false
+    private var noticeDismissWorkItem: DispatchWorkItem?
+    private var processedIdentifiers = Set<String>()
+    private var processedIdentifiersOrder: [String] = []
+    private var didLoadProcessedIdentifiers = false
 
     private let deleteBatchThreshold = 15
     private let deleteDelaySeconds: TimeInterval = 3.5
+    private let processedIdentifiersLimit = 12000
+    private let processedIdentifiersKey = "processedAssetIdentifiers"
 
     private let libraryManager = PhotoLibraryManager.shared
 
@@ -119,6 +126,7 @@ final class PhotoCleanerViewModel: ObservableObject {
     func bootstrap() {
         guard !didBootstrap else { return }
         didBootstrap = true
+        loadProcessedIdentifiersIfNeeded()
 
         Task { await ensureAuthorization() }
     }
@@ -139,7 +147,8 @@ final class PhotoCleanerViewModel: ObservableObject {
     // MARK: - User actions
 
     func keepCurrent() {
-        guard currentAsset != nil else { return }
+        guard let asset = currentAsset else { return }
+        markAssetProcessed(asset)
         stats.kept += 1
         advanceToNextAsset()
     }
@@ -152,6 +161,7 @@ final class PhotoCleanerViewModel: ObservableObject {
         pendingDeleteIdentifiers.insert(asset.id)
         pendingDeleteCount = pendingDeleteQueue.count
         stats.deleted += 1
+        markAssetProcessed(asset)
 
         advanceToNextAsset()
         scheduleDeleteFlush()
@@ -160,6 +170,7 @@ final class PhotoCleanerViewModel: ObservableObject {
     func skipCurrent() {
         guard let asset = currentAsset else { return }
         stats.skipped += 1
+        markAssetProcessed(asset)
         assetQueue.append(asset)
         advanceToNextAsset()
     }
@@ -197,6 +208,11 @@ final class PhotoCleanerViewModel: ObservableObject {
 
     func clearError() {
         errorMessage = nil
+    }
+
+    func clearNotice() {
+        noticeDismissWorkItem?.cancel()
+        noticeMessage = nil
     }
 
     func openSettings() {
@@ -311,7 +327,8 @@ final class PhotoCleanerViewModel: ObservableObject {
             dateFilter: dateFilter,
             mediaFilter: currentMediaFilter
         )
-        let assets = fetched.filter { !pendingDeleteIdentifiers.contains($0.id) }
+        loadProcessedIdentifiersIfNeeded()
+        let assets = fetched.filter { !pendingDeleteIdentifiers.contains($0.id) && !processedIdentifiers.contains($0.id) }
         assetQueue = assets
         advanceToNextAsset()
 
@@ -379,7 +396,17 @@ final class PhotoCleanerViewModel: ObservableObject {
             } else {
                 previewAsset = assetQueue.first
             }
-            errorMessage = error.localizedDescription
+
+            if let libraryError = error as? PhotoLibraryError {
+                switch libraryError {
+                case .userCancelledDelete:
+                    presentNotice("Silme işlemi iptal edildi. Fotoğraflar güvende.")
+                case .deleteFailed(let message):
+                    errorMessage = message
+                }
+            } else {
+                errorMessage = error.localizedDescription
+            }
         }
 
         isFlushingDeletes = false
@@ -392,6 +419,49 @@ final class PhotoCleanerViewModel: ObservableObject {
         albums = list
         if !list.contains(selectedAlbum) {
             selectedAlbum = .allPhotos
+        }
+    }
+
+    private func presentNotice(_ message: String) {
+        noticeDismissWorkItem?.cancel()
+        noticeMessage = message
+
+        let workItem = DispatchWorkItem { [weak self] in
+            self?.noticeMessage = nil
+        }
+        noticeDismissWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.5, execute: workItem)
+    }
+
+    private func loadProcessedIdentifiersIfNeeded() {
+        guard !didLoadProcessedIdentifiers else { return }
+        didLoadProcessedIdentifiers = true
+        let stored = UserDefaults.standard.stringArray(forKey: processedIdentifiersKey) ?? []
+        processedIdentifiersOrder = stored
+        processedIdentifiers = Set(stored)
+    }
+
+    private func persistProcessedIdentifiers() {
+        UserDefaults.standard.set(processedIdentifiersOrder, forKey: processedIdentifiersKey)
+    }
+
+    private func markAssetProcessed(_ asset: PhotoAsset) {
+        loadProcessedIdentifiersIfNeeded()
+        let id = asset.id
+        guard !processedIdentifiers.contains(id) else { return }
+        processedIdentifiers.insert(id)
+        processedIdentifiersOrder.append(id)
+
+        trimProcessedIdentifiersIfNeeded()
+        persistProcessedIdentifiers()
+    }
+
+    private func trimProcessedIdentifiersIfNeeded() {
+        if processedIdentifiersOrder.count > processedIdentifiersLimit {
+            let overflow = processedIdentifiersOrder.count - processedIdentifiersLimit
+            let removed = processedIdentifiersOrder.prefix(overflow)
+            processedIdentifiersOrder.removeFirst(overflow)
+            removed.forEach { processedIdentifiers.remove($0) }
         }
     }
 }

@@ -2,6 +2,20 @@ import Photos
 import PhotosUI
 import UIKit
 
+enum PhotoLibraryError: LocalizedError, Equatable {
+    case userCancelledDelete
+    case deleteFailed(String)
+
+    var errorDescription: String? {
+        switch self {
+        case .userCancelledDelete:
+            return "Silme işlemi iptal edildi."
+        case .deleteFailed(let message):
+            return message
+        }
+    }
+}
+
 final class PhotoLibraryManager {
     static let shared = PhotoLibraryManager()
 
@@ -125,15 +139,19 @@ final class PhotoLibraryManager {
                 PHAssetChangeRequest.deleteAssets(nativeAssets)
             }) { success, error in
                 if let error {
+                    let nsError = error as NSError
+                    if nsError.domain == PHPhotosErrorDomain,
+                       PHPhotosError.Code(rawValue: nsError.code) == .userCancelled {
+                        continuation.resume(throwing: PhotoLibraryError.userCancelledDelete)
+                        return
+                    }
                     continuation.resume(throwing: error)
                 } else if success {
                     continuation.resume(returning: ())
                 } else {
                     continuation.resume(
-                        throwing: NSError(
-                            domain: "SwipeRightPhotoCleaner",
-                            code: -1,
-                            userInfo: [NSLocalizedDescriptionKey: "Silme işlemi bilinmeyen bir nedenle başarısız oldu."]
+                        throwing: PhotoLibraryError.deleteFailed(
+                            "Silme işlemi bilinmeyen bir nedenle başarısız oldu."
                         )
                     )
                 }

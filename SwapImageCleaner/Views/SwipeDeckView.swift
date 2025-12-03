@@ -82,24 +82,46 @@ struct SwipeDeckView: View {
 
 private struct EmptyDeckView: View {
     let refreshAction: () -> Void
+    
+    @State private var sparkleRotation: Double = 0
+    @State private var sparkleScale: CGFloat = 1.0
+    @State private var appearScale: CGFloat = 0.8
+    @State private var appearOpacity: CGFloat = 0
 
     var body: some View {
         VStack(spacing: 12) {
-            // Tiny icon
-            Circle()
-                .fill(
-                    LinearGradient(
-                        colors: [Color.purple.opacity(0.4), Color.blue.opacity(0.3)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
+            // Animated icon
+            ZStack {
+                // Glow background
+                Circle()
+                    .fill(
+                        RadialGradient(
+                            colors: [Color.purple.opacity(0.3), Color.blue.opacity(0.15), .clear],
+                            center: .center,
+                            startRadius: 10,
+                            endRadius: 50
+                        )
                     )
-                )
-                .frame(width: 48, height: 48)
-                .overlay(
-                    Image(systemName: "sparkles")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundStyle(.white)
-                )
+                    .frame(width: 70, height: 70)
+                    .scaleEffect(sparkleScale)
+                
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.purple.opacity(0.5), Color.blue.opacity(0.4)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 48, height: 48)
+                    .overlay(
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundStyle(.white)
+                            .rotationEffect(.degrees(sparkleRotation))
+                    )
+                    .shadow(color: Color.purple.opacity(0.4), radius: 10, x: 0, y: 4)
+            }
 
             // Minimal text
             VStack(spacing: 4) {
@@ -111,8 +133,12 @@ private struct EmptyDeckView: View {
                     .foregroundStyle(.white.opacity(0.7))
             }
 
-            // Small button
-            Button(action: refreshAction) {
+            // Small button with animation
+            Button(action: {
+                let impact = UIImpactFeedbackGenerator(style: .medium)
+                impact.impactOccurred()
+                refreshAction()
+            }) {
                 HStack(spacing: 4) {
                     Image(systemName: "arrow.clockwise")
                         .font(.caption.weight(.bold))
@@ -129,7 +155,30 @@ private struct EmptyDeckView: View {
         .padding(.vertical, 18)
         .padding(.horizontal, 22)
         .background(.ultraThinMaterial)
-        .background(Capsule().fill(Color.black.opacity(0.3)))
-        .clipShape(Capsule())
+        .background(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .fill(Color.black.opacity(0.3))
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(Color.white.opacity(0.15), lineWidth: 1)
+        )
+        .scaleEffect(appearScale)
+        .opacity(appearOpacity)
+        .onAppear {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                appearScale = 1.0
+                appearOpacity = 1.0
+            }
+            
+            withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
+                sparkleRotation = 15
+                sparkleScale = 1.1
+            }
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Galerin tertemiz")
+        .accessibilityHint("Yeniden taramak için çift dokunun")
     }
 }

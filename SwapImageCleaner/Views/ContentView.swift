@@ -1,5 +1,6 @@
 import SwiftUI
 import Photos
+import UIKit
 
 struct ContentView: View {
     @ObservedObject var viewModel: PhotoCleanerViewModel
@@ -10,7 +11,7 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            backgroundView
+            AuroraBackground()
 
             switch viewModel.authorizationState {
             case .idle, .requesting:
@@ -58,63 +59,21 @@ struct ContentView: View {
         } message: {
             Text(viewModel.errorMessage ?? "Bilinmeyen hata")
         }
-    }
-
-    private var backgroundView: some View {
-        ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 0.05, green: 0.08, blue: 0.18),
-                    Color(red: 0.10, green: 0.07, blue: 0.15),
-                    Color(red: 0.02, green: 0.04, blue: 0.10)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-
-            RadialGradient(
-                gradient: Gradient(colors: [
-                    Color.purple.opacity(0.25),
-                    Color.blue.opacity(0.15),
-                    .clear
-                ]),
-                center: .topTrailing,
-                startRadius: 20,
-                endRadius: 380
-            )
-            .blendMode(.screen)
-
-            RadialGradient(
-                gradient: Gradient(colors: [
-                    Color.pink.opacity(0.18),
-                    Color.orange.opacity(0.08),
-                    .clear
-                ]),
-                center: .bottomLeading,
-                startRadius: 30,
-                endRadius: 400
-            )
-            .blendMode(.screen)
-
-            // Mesh gradient effect
-            Circle()
-                .fill(
-                    RadialGradient(
-                        colors: [
-                            Color.cyan.opacity(0.12),
-                            .clear
-                        ],
-                        center: .center,
-                        startRadius: 50,
-                        endRadius: 250
+        .overlay(alignment: .top) {
+            if let notice = viewModel.noticeMessage {
+                VStack(spacing: 0) {
+                    Color.clear
+                        .frame(height: UIApplication.topSafeAreaInset + 12)
+                    NoticeBanner(
+                        text: notice,
+                        onDismiss: viewModel.clearNotice
                     )
-                )
-                .frame(width: 500, height: 500)
-                .offset(x: 100, y: -150)
-                .blur(radius: 60)
-                .blendMode(.plusLighter)
+                    .padding(.horizontal, 20)
+                }
+                .transition(.move(edge: .top).combined(with: .opacity))
+            }
         }
-        .ignoresSafeArea()
+        .animation(.spring(response: 0.35, dampingFraction: 0.85), value: viewModel.noticeMessage)
     }
 
     private var authorizedLayout: some View {
@@ -466,6 +425,17 @@ private struct ActionButton: View {
                 return .green
             }
         }
+        
+        var hapticStyle: UIImpactFeedbackGenerator.FeedbackStyle {
+            switch self {
+            case .delete:
+                return .heavy
+            case .skip:
+                return .light
+            case .keep:
+                return .medium
+            }
+        }
     }
 
     let style: Style
@@ -474,25 +444,36 @@ private struct ActionButton: View {
     let pendingBadge: Int?
 
     @State private var isPressed = false
+    @State private var glowIntensity: CGFloat = 0
 
     var body: some View {
         Button(action: {
-            let impact = UIImpactFeedbackGenerator(style: .medium)
+            let impact = UIImpactFeedbackGenerator(style: style.hapticStyle)
             impact.impactOccurred()
 
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+            withAnimation(.spring(response: 0.2, dampingFraction: 0.5)) {
                 isPressed = true
+                glowIntensity = 1
             }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                withAnimation(.spring(response: 0.35, dampingFraction: 0.65)) {
                     isPressed = false
+                    glowIntensity = 0
                 }
             }
 
             action()
         }) {
             ZStack(alignment: .topTrailing) {
+                // Glow effect on press
+                Circle()
+                    .fill(style.colors.first?.opacity(0.4) ?? .clear)
+                    .frame(width: 56, height: 56)
+                    .blur(radius: 10)
+                    .scaleEffect(isPressed ? 1.3 : 0.8)
+                    .opacity(glowIntensity)
+                
                 Circle()
                     .fill(
                         LinearGradient(
@@ -503,16 +484,24 @@ private struct ActionButton: View {
                     )
                     .overlay(
                         Circle()
-                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                            .stroke(
+                                LinearGradient(
+                                    colors: [Color.white.opacity(0.4), Color.white.opacity(0.1)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                lineWidth: 1.5
+                            )
                     )
                     .frame(width: 44, height: 44)
                     .overlay(
                         Image(systemName: style.icon)
                             .font(.system(size: 18, weight: .bold))
                             .foregroundStyle(.white)
+                            .scaleEffect(isPressed ? 0.85 : 1)
                     )
-                    .shadow(color: style.colors.last?.opacity(0.4) ?? .black.opacity(0.3), radius: 8, x: 0, y: 3)
-                    .scaleEffect(isPressed ? 0.92 : 1)
+                    .shadow(color: style.colors.last?.opacity(isPressed ? 0.6 : 0.4) ?? .black.opacity(0.3), radius: isPressed ? 12 : 8, x: 0, y: isPressed ? 2 : 4)
+                    .scaleEffect(isPressed ? 0.88 : 1)
 
                 // Badge
                 let actualDeleted = badge - (pendingBadge ?? 0)
@@ -526,6 +515,7 @@ private struct ActionButton: View {
                                 .padding(.horizontal, 5)
                                 .padding(.vertical, 2)
                                 .background(Capsule().fill(style.badgeColor.opacity(0.95)))
+                                .shadow(color: style.badgeColor.opacity(0.5), radius: 4, x: 0, y: 2)
                         }
 
                         // Pending badge (waiting to be deleted)
@@ -536,6 +526,7 @@ private struct ActionButton: View {
                                 .padding(.horizontal, 4)
                                 .padding(.vertical, 2)
                                 .background(Capsule().fill(Color.orange.opacity(0.95)))
+                                .shadow(color: Color.orange.opacity(0.5), radius: 4, x: 0, y: 2)
                         }
                     }
                     .offset(x: 6, y: -6)
@@ -544,6 +535,33 @@ private struct ActionButton: View {
             }
         }
         .buttonStyle(.plain)
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: badge)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel)
+        .accessibilityHint(accessibilityHint)
+        .accessibilityAddTraits(.isButton)
+    }
+    
+    private var accessibilityLabel: String {
+        switch style {
+        case .delete:
+            return "Sil, \(badge) silindi"
+        case .skip:
+            return "Atla, \(badge) atlandı"
+        case .keep:
+            return "Tut, \(badge) tutuldu"
+        }
+    }
+    
+    private var accessibilityHint: String {
+        switch style {
+        case .delete:
+            return "Bu fotoğrafı silmek için çift dokunun"
+        case .skip:
+            return "Bu fotoğrafı atlamak için çift dokunun"
+        case .keep:
+            return "Bu fotoğrafı tutmak için çift dokunun"
+        }
     }
 }
 
@@ -806,6 +824,57 @@ private struct LoadingOverlay: View {
         .onAppear {
             isAnimating = true
         }
+    }
+}
+
+private struct NoticeBanner: View {
+    let text: String
+    let onDismiss: () -> Void
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: "info.circle.fill")
+                .font(.headline.weight(.semibold))
+                .foregroundStyle(.white)
+            Text(text)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.white)
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+            Spacer(minLength: 8)
+            Button(action: onDismiss) {
+                Image(systemName: "xmark")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(.white.opacity(0.8))
+                    .padding(6)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(.ultraThinMaterial)
+        .background(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(Color.white.opacity(0.12))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(Color.white.opacity(0.2), lineWidth: 1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .shadow(color: .black.opacity(0.25), radius: 12, x: 0, y: 6)
+    }
+}
+
+private extension UIApplication {
+    static var topSafeAreaInset: CGFloat {
+        guard
+            let window = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow })
+        else { return 0 }
+        return window.safeAreaInsets.top
     }
 }
 
