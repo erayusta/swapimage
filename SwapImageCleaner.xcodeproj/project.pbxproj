@@ -28,6 +28,7 @@
 		01C8FAA82F0A0D5C00A0F1A0 /* ReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8FAA72F0A0D5C00A0F1A0 /* ReviewManager.swift */; };
 		01C8FAAA2F0A0D5C00A0F1A0 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8FAA92F0A0D5C00A0F1A0 /* ConfettiView.swift */; };
 		01C8FAAC2F0A0D5C00A0F1A0 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8FAAB2F0A0D5C00A0F1A0 /* HapticManager.swift */; };
+		01C8FAAE2F0A0D5C00A0F1A0 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8FAAD2F0A0D5C00A0F1A0 /* SplashView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		01C8FAA72F0A0D5C00A0F1A0 /* ReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewManager.swift; sourceTree = "<group>"; };
 		01C8FAA92F0A0D5C00A0F1A0 /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		01C8FAAB2F0A0D5C00A0F1A0 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		01C8FAAD2F0A0D5C00A0F1A0 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 				01C8FAA32F0A0D5C00A0F1A0 /* OnboardingView.swift */,
 				01C8FAA52F0A0D5C00A0F1A0 /* AuroraBackground.swift */,
 				01C8FAA92F0A0D5C00A0F1A0 /* ConfettiView.swift */,
+				01C8FAAD2F0A0D5C00A0F1A0 /* SplashView.swift */,
 				01C8F7A52F0A0D5C00A0F1A0 /* ContentView.swift */,
 				01C8F7A72F0A0D5C00A0F1A0 /* SwipeDeckView.swift */,
 				01C8F7A82F0A0D5C00A0F1A0 /* SwipeCardView.swift */,
@@ -265,6 +268,7 @@
 				01C8FAA82F0A0D5C00A0F1A0 /* ReviewManager.swift in Sources */,
 				01C8FAAA2F0A0D5C00A0F1A0 /* ConfettiView.swift in Sources */,
 				01C8FAAC2F0A0D5C00A0F1A0 /* HapticManager.swift in Sources */,
+				01C8FAAE2F0A0D5C00A0F1A0 /* SplashView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

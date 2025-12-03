@@ -11,7 +11,7 @@ struct SwipeRightPhotoCleanerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            AppRootView()
+            SplashView()
         }
         .onChange(of: scenePhase) { newPhase in
             switch newPhase {
