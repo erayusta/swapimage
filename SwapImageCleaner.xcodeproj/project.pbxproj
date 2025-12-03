@@ -29,6 +29,7 @@
 		01C8FAAA2F0A0D5C00A0F1A0 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8FAA92F0A0D5C00A0F1A0 /* ConfettiView.swift */; };
 		01C8FAAC2F0A0D5C00A0F1A0 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8FAAB2F0A0D5C00A0F1A0 /* HapticManager.swift */; };
 		01C8FAAE2F0A0D5C00A0F1A0 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C8FAAD2F0A0D5C00A0F1A0 /* SplashView.swift */; };
+		01C8FAB02F0A0D5C00A0F1A0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01C8FAB12F0A0D5C00A0F1A0 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,8 @@
 		01C8FAA92F0A0D5C00A0F1A0 /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		01C8FAAB2F0A0D5C00A0F1A0 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		01C8FAAD2F0A0D5C00A0F1A0 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		01C8FAB22F0A0D5C00A0F1A0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		01C8FAB32F0A0D5C00A0F1A0 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +92,7 @@
 				01C8F7992F0A0D5B00A0F1A0 /* Support */,
 				01C8F79B2F0A0D5B00A0F1A0 /* Assets */,
 				01C8F79A2F0A0D5B00A0F1A0 /* Preview Content */,
+				01C8FAB12F0A0D5C00A0F1A0 /* Localizable.strings */,
 			);
 			path = SwapImageCleaner;
 			sourceTree = "<group>";
@@ -240,6 +244,7 @@
 				01C8F7C02F0A0D5C00A0F1A0 /* Preview Assets.xcassets in Resources */,
 				01C8F7BE2F0A0D5C00A0F1A0 /* LaunchScreen.storyboard in Resources */,
 				01C8F7BF2F0A0D5C00A0F1A0 /* Assets.xcassets in Resources */,
+				01C8FAB02F0A0D5C00A0F1A0 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +278,18 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		01C8FAB12F0A0D5C00A0F1A0 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				01C8FAB22F0A0D5C00A0F1A0 /* en */,
+				01C8FAB32F0A0D5C00A0F1A0 /* tr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		01C8F7C42F0A0D5C00A0F1A0 /* Debug */ = {
