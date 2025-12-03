@@ -68,3 +68,7 @@
 "general.photos" = "Photos";
 "general.videos" = "Videos";
 "general.all" = "All";
+
+/* Splash Screen */
+"splash.title" = "Gallery Cleaner";
+"splash.subtitle" = "Swipe to Clean";

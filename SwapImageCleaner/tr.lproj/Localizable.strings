@@ -68,3 +68,7 @@
 "general.photos" = "Fotoğraflar";
 "general.videos" = "Videolar";
 "general.all" = "Tümü";
+
+/* Splash Screen */
+"splash.title" = "Galeri Temizleyici";
+"splash.subtitle" = "Kaydır ve Temizle";

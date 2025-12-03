@@ -32,11 +32,11 @@ struct SplashView: View {
                     
                     // App Name
                     VStack(spacing: 6) {
-                        Text("Galeri Temizleyici")
+                        Text("splash.title", tableName: "Localizable")
                             .font(.title2.weight(.bold))
                             .foregroundStyle(.white)
                         
-                        Text("Kaydır ve Temizle")
+                        Text("splash.subtitle", tableName: "Localizable")
                             .font(.subheadline.weight(.medium))
                             .foregroundStyle(.white.opacity(0.7))
                     }
